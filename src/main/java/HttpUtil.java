@@ -34,7 +34,7 @@ public class HttpUtil {
         return null;
     }
 
-    public static void post(String uri, String data) throws Exception {
+    public static int post(String uri, String data) throws Exception {
         HttpClient client = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
@@ -43,15 +43,14 @@ public class HttpUtil {
                 .header("Content-Type", "application/json")
                 .build();
 
+        int statusCode = -1;
+
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 200) {
-                System.out.println("STATUS CODE: " + response.statusCode());
-            } else {
-                System.out.println("Tracking successfully created.");
-            }
+            statusCode = response.statusCode();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return statusCode;
     }
 }
